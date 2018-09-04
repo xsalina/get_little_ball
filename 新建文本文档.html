@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>朝歌</title>
+	<style type="text/css">
+        *{margin:0;padding:0;}
+        li{list-style:none;}   
+        div{
+        	position: absolute;
+        	border-radius: 50%;
+        }
+		p{  
+			width:500px;
+			margin:300px auto;
+			color:red;
+			font-size:40px;
+			font-weight:bold;
+			cursor: pointer;
+		}
+    </style>
+</head>
+<body>
+   <p>点我  点我 点我哦</p>
+    <script type="text/javascript">
+    	(function(){
+    		let winWidth = document.documentElement.clientWidth,
+    		    winHeight = document.documentElement.clientHeight;
+    		document.onclick = function(){
+    			//创建球
+    			createBall({
+    				//球的直径/盒子的宽高
+    				diamater : Math.floor(Math.random()*50+50),
+    				x : 0,//初始坐标值
+    				y : 0,
+    				speedX : Math.floor(Math.random()*5+5),
+    				speedY : Math.floor(Math.random()*5+5),
+    			});
+    		};
+    		function createBall(data){
+    			//data是传进来的对象,里面存储着所有的初始参数
+    			let div = document.createElement("div");
+    			div.className = "ball";
+    			div.style.width = div.style.height = data.diamater + "px";
+    			div.style.left = data.x + "px";
+    			div.style.top = data.y + "px";
+    			div.style.backgroundColor = randomColor();
+    			document.body.appendChild(div);
+    			//每个球的运动函数
+    			function run(){
+    				let maxX = winWidth - data.diamater,
+    					maxY =  winHeight - data.diamater;
+    				//改变对象中的坐标值,最后赋值给div
+    				data.x += data.speedX;	
+    				data.y += data.speedY;	
+    				if(data.x <= 0 || data.x >= maxX){
+    					//能进来一定是到达边界
+    					data.speedX = -data.speedX;
+    					data.x = Math.min(data.x,maxX);
+    					data.x = Math.max(data.x,0);
+    					div.style.backgroundColor = randomColor();
+    				}	
+    				if(data.y <= 0 || data.y >= maxY){
+    					data.speedY = -data.speedY;	
+    					data.y = Math.min(data.y,maxY);
+    					data.y = Math.max(data.y,0);
+    					div.style.backgroundColor = randomColor();
+    				}
+    				div.style.left = data.x + "px";
+    				div.style.top = data.y + "px";
+
+    				requestAnimationFrame(run);
+    			}
+    			run();
+    		}
+    		function randomColor(){
+    			let r = Math.floor(Math.random()*256),
+    			 	g = Math.floor(Math.random()*256),
+    			 	b = Math.floor(Math.random()*256);
+    			//rgb()
+    			return `rgb(${r},${g},${b})`;
+    		}
+    	})();
+    </script>
+</body>
+</html>
